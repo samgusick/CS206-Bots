@@ -6,9 +6,9 @@ physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
 planeId = p.loadURDF("plane.urdf")
-
+robotId = p.loadURDF("body.urdf")
 p.setGravity(0,0,-9.8)
-p.loadSDF("box.sdf")
+p.loadSDF("world.sdf")
 
 for x in range(1000):
     p.stepSimulation()
