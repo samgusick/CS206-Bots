@@ -1,3 +1,4 @@
+from cgi import print_directory
 from pyrosim.neuron  import NEURON
 
 from pyrosim.synapse import SYNAPSE
@@ -33,8 +34,9 @@ class NEURAL_NETWORK:
             if self.neurons[self.neurons[key].name].Is_Sensor_Neuron():
                 self.neurons[self.neurons[key].name].Update_Sensor_Neuron()
             else:
-                self.neurons[self.neurons[key].name].Update_Hidden_Or_Motor_Neuron()
-
+                self.neurons[self.neurons[key].name].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
+        # exit()
+        
     def Get_Neuron_Names(self):
         return self.neurons.keys()
     

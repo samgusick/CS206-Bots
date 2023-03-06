@@ -1,4 +1,5 @@
 import math
+from xml.etree.ElementTree import tostring
 
 import pybullet
 
@@ -69,8 +70,28 @@ class NEURON:
     def Update_Sensor_Neuron(self):
         self.Set_Value(pyrosim.Get_Touch_Sensor_Value_For_Link(self.Get_Link_Name()))
 
-    def Update_Hidden_Or_Motor_Neuron(self):
-        self.Set_Value(math.pi/4.0)
+    def Allow_Presynaptic_Neuron_To_Influence_Me(self, current_synapse_weight, presynaptic_neuron_value):
+        print(current_synapse_weight * presynaptic_neuron_value)
+        #print(current_synapse_weight)
+        #print(presynaptic_neuron_value)
+        self.Add_To_Value(current_synapse_weight * presynaptic_neuron_value)
+    
+    def Update_Hidden_Or_Motor_Neuron(self, neurons, synapses):
+        self.Set_Value(0)
+        #print("Pre Loop Neuron Value: " +  str(self.Get_Value()))
+        
+        for key in synapses:
+            if(key[1] == self.Get_Name()):
+                self.Allow_Presynaptic_Neuron_To_Influence_Me(synapses[key].Get_Weight(), neurons[key[0]].Get_Value())
+                # print("Presynaptic Neuron: " + key[0])
+                # print("Postsynaptic Neuron: " + key[1])
+        
+        self.Threshold()
+        #print("Post Loop Neuron Value: " + str(self.Get_Value()))
+        #exit()
+    
+
+        
 # -------------------------- Private methods -------------------------
 
     def Determine_Name(self,line):
