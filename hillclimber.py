@@ -37,7 +37,7 @@ class HILL_CLIMBER:
             self.parent = self.child
 
     def Print(self):
-        print("\nparent fitness: " + str(self.parent.fitness) + "\nchild fitness: " + str(self.child.fitness))
+        #print("parent fitness: " + str(self.parent.fitness) + " child fitness: " + str(self.child.fitness))
         pass
 
 
