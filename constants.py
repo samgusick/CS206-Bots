@@ -14,3 +14,6 @@ gravity = -9.8
 sleep_time = 1/120
 numberOfGenerations = 10
 populationSize = 10
+numSensorNeurons = 5
+numMotorNeurons = 4
+motorJointRange = .4
