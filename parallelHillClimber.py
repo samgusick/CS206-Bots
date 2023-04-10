@@ -28,7 +28,7 @@ class PARALLEL_HILL_CLIMBER:
     def Show_Best(self): 
         best_fit = self.parents[0]
         for x in range (self.parents.__len__()):
-            if (best_fit.fitness > self.parents[x].fitness):
+            if (best_fit.fitness < self.parents[x].fitness):
                 best_fit = self.parents[x]
                    
         best_fit.Start_Simulation("GUI")
@@ -59,7 +59,7 @@ class PARALLEL_HILL_CLIMBER:
 
     def Select(self):
         for x in range (self.parents.__len__()):
-            if (self.parents[x].fitness > self.children[x].fitness):
+            if (self.parents[x].fitness < self.children[x].fitness):
                 self.parents[x] = self.children[x]
             
             # track the best fitness score of each robot in the population over time
@@ -74,7 +74,7 @@ class PARALLEL_HILL_CLIMBER:
 
     def Evaluate(self, solutions):
         for x in range(solutions.__len__()):
-            solutions[x].Start_Simulation("DIRECT")
+            solutions[x].Start_Simulation("GUI")
         
         for x in range(solutions.__len__()):
             solutions[x].Wait_For_Simulation_To_End()
