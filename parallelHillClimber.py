@@ -11,6 +11,7 @@ class PARALLEL_HILL_CLIMBER:
         os.system("del robot*.txt")
         os.system("del world*.sdf")
         self.nextAvailableID = 0
+        self.currentGenNum = 0
         self.parents = dict()
         for x in range(populationSize):
             self.parents[x] = SOLUTION(self.nextAvailableID)
@@ -23,15 +24,24 @@ class PARALLEL_HILL_CLIMBER:
     def Evolve(self):
         self.Evaluate(self.parents)
         for currentGeneration in range(numberOfGenerations):
+            self.currentGenNum = currentGeneration
             self.Evolve_For_One_Generation()
     
-    def Show_Best(self): 
-        best_fit = self.parents[0]
-        for x in range (self.parents.__len__()):
-            if (best_fit.fitness < self.parents[x].fitness):
-                best_fit = self.parents[x]
-                   
-        best_fit.Start_Simulation("GUI")
+    def Show_Best(self):
+        if (self.currentGenNum < numberOfGenerations/2):
+            best_fit = self.parents[0]
+            for x in range (self.parents.__len__()):
+                if (best_fit.fitness < self.parents[x].fitness):
+                    best_fit = self.parents[x]
+            best_fit.Start_Simulation("GUI")
+            
+        else:
+            best_fit = self.parents[0]
+            for x in range (self.parents.__len__()):
+                if (best_fit.fitness > self.parents[x].fitness):
+                    best_fit = self.parents[x]
+            best_fit.Start_Simulation("GUI")
+            
         
         
         
@@ -58,14 +68,22 @@ class PARALLEL_HILL_CLIMBER:
             self.children[x].Mutate()
 
     def Select(self):
-        for x in range (self.parents.__len__()):
-            if (self.parents[x].fitness < self.children[x].fitness):
-                self.parents[x] = self.children[x]
-            
-            # track the best fitness score of each robot in the population over time
-            f = open("robot" + str(x) + ".txt","a")
-            f.write(str(self.parents[x].fitness) + "\n")
-            f.close()
+        if (self.currentGenNum < numberOfGenerations/2):
+            for x in range (self.parents.__len__()):
+                if (self.parents[x].fitness < self.children[x].fitness):
+                    self.parents[x] = self.children[x]
+                            # track the best fitness score of each robot in the population over time
+                f = open("robot" + str(x) + ".txt","a")
+                f.write(str(self.parents[x].fitness) + "\n")
+                f.close()
+        else:
+            for x in range (self.parents.__len__()):
+                if (self.parents[x].fitness > self.children[x].fitness):
+                    self.parents[x] = self.children[x]
+                            # track the best fitness score of each robot in the population over time
+                f = open("robot" + str(x) + ".txt","a")
+                f.write(str(self.parents[x].fitness) + "\n")
+                f.close()            
             
 
     def Print(self):
@@ -74,7 +92,7 @@ class PARALLEL_HILL_CLIMBER:
 
     def Evaluate(self, solutions):
         for x in range(solutions.__len__()):
-            solutions[x].Start_Simulation("GUI")
+            solutions[x].Start_Simulation("DIRECT")
         
         for x in range(solutions.__len__()):
             solutions[x].Wait_For_Simulation_To_End()
