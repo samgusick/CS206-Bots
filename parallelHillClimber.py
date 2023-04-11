@@ -28,19 +28,11 @@ class PARALLEL_HILL_CLIMBER:
             self.Evolve_For_One_Generation()
     
     def Show_Best(self):
-        if (self.currentGenNum < numberOfGenerations/2):
-            best_fit = self.parents[0]
-            for x in range (self.parents.__len__()):
-                if (best_fit.fitness < self.parents[x].fitness):
-                    best_fit = self.parents[x]
-            best_fit.Start_Simulation("GUI")
-            
-        else:
-            best_fit = self.parents[0]
-            for x in range (self.parents.__len__()):
-                if (best_fit.fitness > self.parents[x].fitness):
-                    best_fit = self.parents[x]
-            best_fit.Start_Simulation("GUI")
+        best_fit = self.parents[0]
+        for x in range (self.parents.__len__()):
+            if (best_fit.fitness < self.parents[x].fitness):
+                best_fit = self.parents[x]
+        best_fit.Start_Simulation("GUI")
             
         
         
@@ -68,23 +60,13 @@ class PARALLEL_HILL_CLIMBER:
             self.children[x].Mutate()
 
     def Select(self):
-        if (self.currentGenNum < numberOfGenerations/2):
-            for x in range (self.parents.__len__()):
-                if (self.parents[x].fitness < self.children[x].fitness):
-                    self.parents[x] = self.children[x]
-                            # track the best fitness score of each robot in the population over time
-                f = open("robot" + str(x) + ".txt","a")
-                f.write(str(self.parents[x].fitness) + "\n")
-                f.close()
-        else:
-            for x in range (self.parents.__len__()):
-                if (self.parents[x].fitness > self.children[x].fitness):
-                    self.parents[x] = self.children[x]
-                            # track the best fitness score of each robot in the population over time
-                f = open("robot" + str(x) + ".txt","a")
-                f.write(str(self.parents[x].fitness) + "\n")
-                f.close()            
-            
+        for x in range (self.parents.__len__()):
+            if (self.parents[x].fitness < self.children[x].fitness):
+                self.parents[x] = self.children[x]
+                        # track the best fitness score of each robot in the population over time
+            f = open("robot" + str(x) + ".txt","a")
+            f.write(str(self.parents[x].fitness) + "\n")
+            f.close()
 
     def Print(self):
         for x in range (self.parents.__len__()):
