@@ -10,8 +10,12 @@ class PARALLEL_HILL_CLIMBER:
         os.system("del body*.urdf")
         os.system("del robot*.txt")
         os.system("del world*.sdf")
+        self.fitnessData = numpy.zeros((populationSize, numberOfGenerations))
+        
         self.nextAvailableID = 0
         self.currentGenNum = 0
+        # create a dictionary 
+        
         self.parents = dict()
         for x in range(populationSize):
             self.parents[x] = SOLUTION(self.nextAvailableID)
@@ -28,12 +32,13 @@ class PARALLEL_HILL_CLIMBER:
             self.Evolve_For_One_Generation()
     
     def Show_Best(self):
+        numpy.save('fitnessDataA.npy', self.fitnessData)
         best_fit = self.parents[0]
         for x in range (self.parents.__len__()):
             if (best_fit.fitness < self.parents[x].fitness):
                 best_fit = self.parents[x]
         best_fit.Start_Simulation("GUI")
-            
+
         
         
         
@@ -64,6 +69,8 @@ class PARALLEL_HILL_CLIMBER:
             if (self.parents[x].fitness < self.children[x].fitness):
                 self.parents[x] = self.children[x]
                         # track the best fitness score of each robot in the population over time
+            self.fitnessData[x, self.currentGenNum] = self.parents[x].fitness
+            
             f = open("robot" + str(x) + ".txt","a")
             f.write(str(self.parents[x].fitness) + "\n")
             f.close()
