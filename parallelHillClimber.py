@@ -32,7 +32,7 @@ class PARALLEL_HILL_CLIMBER:
             self.Evolve_For_One_Generation()
     
     def Show_Best(self):
-        numpy.save('fitnessDataA.npy', self.fitnessData)
+        numpy.save('fitnessDataB.npy', self.fitnessData)
         best_fit = self.parents[0]
         for x in range (self.parents.__len__()):
             if (best_fit.fitness < self.parents[x].fitness):
